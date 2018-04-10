@@ -1,0 +1,44 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: cloudsqlproxy
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: cloudsqlproxy
+    spec:
+      containers:
+       # Make sure to specify image tag in production
+       # Check out the newest version in release page
+       # https://github.com/GoogleCloudPlatform/cloudsql-proxy/releases
+       # 5 Oct 2017, 1.11 release
+      - image: b.gcr.io/cloudsql-docker/gce-proxy:1.11
+       # 'Always' if imageTag is 'latest', else set to 'IfNotPresent'
+        imagePullPolicy: Always
+        name: cloudsqlproxy
+        command:
+        - /cloud_sql_proxy
+        - -dir=/cloudsql
+        # Change <INSTANCE_CONNECTION_NAME> here to include your GCP
+        # project, the region of your Cloud SQL instance and the name
+        # of your Cloud SQL instance. The format is
+        # $PROJECT:$REGION:$INSTANCE
+        - -instances=<INSTANCE_CONNECTION_NAME>=tcp:0.0.0.0:3306
+        #,project:database2=tcp:0.0.0.0:3307
+        - -credential_file=/credentials/credentials.json
+        ports:
+        - name: port-database1
+          containerPort: 3306      
+        volumeMounts:
+        - mountPath: /cloudsql
+          name: cloudsql
+        - mountPath: /credentials
+          name: cloudsql-instance-credentials
+      volumes:
+      - name: cloudsql
+        emptyDir:
+      - name: cloudsql-instance-credentials
+        secret:
+          secretName: cloudsql-instance-credentials
