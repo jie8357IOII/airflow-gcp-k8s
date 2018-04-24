@@ -1,0 +1,6 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build','-t', 'gcr.io/airflowk8s/airflow-image:0.2.1', '.']
+  dir: './images/base'
+images:
+- 'gcr.io/airflowk8s/airflow-image'

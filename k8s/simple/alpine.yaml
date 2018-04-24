@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: alpine2
+  namespace: default
+spec:
+  volumes:
+      - name: airflow-home
+        persistentVolumeClaim:
+          claimName: airflow-home
+  containers:
+  - image: alpine:3.2
+    command:
+      - /bin/sh
+      - "-c"
+      - "sleep 60m"
+    imagePullPolicy: IfNotPresent
+    name: alpine    
+    volumeMounts:
+        - name: airflow-home
+          mountPath: /home/airflow
+  restartPolicy: Always

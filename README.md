@@ -55,20 +55,8 @@ settings.
 Create a service account JSON file, and store it on the system you will run this script
 from.
 
-### OAuth Key
-
-Airfow GCP for K8S uses *GSuite* authentiacation. Create a OAuth key in your project,
-go to: API-Manager :: Credentials and create a key.
-
-![OAuth1](doc/img/oauth1.png?raw=true)
-
-It should be a web key
-
-![OAuth1](doc/img/oauth2.png?raw=true)
-
-Make sure "Authorized redirect URIs" are set, example:
-http://airflow.example.com:8080/oauth2callback?next=%2Fadmin%2F
-
+### Cloud SQL Proxy in a Kubernetes cluster
+ref:  https://github.com/GoogleCloudPlatform/cloudsql-proxy/blob/master/Kubernetes.md
 
 ## Settings File
 
